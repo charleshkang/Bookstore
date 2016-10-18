@@ -10,5 +10,13 @@ import UIKit
 
 class BookTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var bookTitleLabel: UILabel!
+    @IBOutlet weak var bookAuthorLabel: UILabel!
+    
+    //MARK: Public
+    func configure(with book: Book) {
+        bookTitleLabel.text = book.title
+        bookAuthorLabel.text = book.author
+    }
 
 }
