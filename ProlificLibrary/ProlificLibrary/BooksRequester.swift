@@ -19,14 +19,11 @@ public func background(function: () -> Void) {
 }
 
 public class BooksRequester {
-    //    private let booksParser = BooksDataParser()
-    
-    func getBooks(`for` completion: ([Book]) -> [Book]) {
+    public func getBooks(`for` completion: ((Result<[Book]>) -> Void)?) {
         background {
-            Alamofire.request(.GET, Constants.baseURL).responseJSON { (response) in
+            Alamofire.request(.GET, "\(Constants.baseURL)\(Constants.allBooksPath)").responseJSON { (response) in
                 if let _ = response.result.value {
                     let json = JSON(data: response.data!)
-                    //                    let books = self.booksParser.parseBookJSON(json)
                     var allBooks = [Book]()
                     
                     for (_, value) in json {
@@ -39,9 +36,37 @@ public class BooksRequester {
                             lastCheckedOut: value["lastCheckedOut"].string,
                             lastCheckedOutBy: value["lastCheckedOutBy"].string))
                     }
-                    main { completion(allBooks) }
+                    main { completion?(.Success(allBooks)) }
                 }
             }
         }
     }
+    
+    public func delete(book: Book) {
+        Alamofire.request(.DELETE, "\(Constants.baseURL)\(book.id)").responseJSON { (response) in
+            if let error = response.result.error {
+                let alert = Alert()
+                alert.error("Something went wrong", title: "\(error)")
+            }
+        }
+    }
+    
+    public func deleteAll(books: [Book], `for` completion: (Response<AnyObject, NSError>) -> Void) {
+        Alamofire.request(.DELETE, "\(Constants.baseURL)\(Constants.clearBooksPath)").responseJSON { response in
+            if let error = response.result.error {
+                let alert = Alert()
+                alert.error("Something went wrong", title: "\(error)")
+            }
+        }
+    }
+    
+    public func post(book: Book, `for` completion: (Response<AnyObject, NSError>) -> Void) {
+        
+    }
+    
+    public func update(book: Book) {
+        
+    }
+    
+    
 }

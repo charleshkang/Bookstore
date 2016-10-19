@@ -13,53 +13,49 @@ class BooksViewController: UIViewController, UITableViewDelegate {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     let bookRequester = BooksRequester()
     var allBooks = [Book]()
+    let alert = Alert()
     
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-    }
-    
-    override func viewWillAppear(animated: Bool) {
         refresh()
     }
     
+    // MARK: - Actions
     func refresh() {
-        bookRequester.getBooks { books -> Void in
-            self.allBooks = books
-            self.tableView.reloadData()
-            
+        activityIndicator.startAnimating()
+        bookRequester.getBooks { books in
+            switch books {
+            case.Success(let books):
+                main {
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.hidden = true
+                    self.allBooks += books
+                    self.tableView.reloadData()
+                }
+            case.Failure(let error):
+                self.activityIndicator.stopAnimating()
+                self.alert.error("\(error)", title: "Error")
+            }
         }
-        
-        // MARK: - Actions
-        //        private func fetchBooks() {
-        //            activityIndicator.startAnimating()
-        //            bookRequester.getBooks { void in
-        //                self.activityIndicator.stopAnimating()
-        //                self.activityIndicator.hidden = true
-        //                self.tableView.reloadData()
-        
-        //            main {
-        //                self.activityIndicator.stopAnimating()
-        //                self.activityIndicator.hidden = true
-        //                self.tableView.reloadData()
-        //            }
-        //            case.Failure(let error):
-        //                self.activityIndicator.stopAnimating()
-        //
-        //                let errorAlert = UIAlertController(title: "Error",
-        //                    message: "\(error)",
-        //                    preferredStyle: UIAlertControllerStyle.Alert)
-        //                errorAlert.addAction(UIAlertAction(title: "OK",
-        //                    style: UIAlertActionStyle.Default,
-        //                    handler: nil))
-        //                self.presentViewController(errorAlert, animated: true, completion: nil)
-        //            }
-        //        }
-        //            }
+    }
+    
+    @IBAction func clearAllBooks(sender: UIBarButtonItem) {
+        let alertController = UIAlertController(title: "Clear all?", message: "Are you sure you want to clear all books?", preferredStyle: .Alert)
+        let deleteAction = UIAlertAction(title: "Delete", style: .Destructive) { (action: UIAlertAction) -> Void in
+            
+            self.bookRequester.deleteAll(self.allBooks) { (_) in
+                self.refresh()
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        alertController.addAction(deleteAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 }
+
 //MARK: - UITableViewDataSource
 extension BooksViewController: UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
