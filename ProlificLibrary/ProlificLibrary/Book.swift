@@ -15,8 +15,8 @@ public struct Book {
     let title: String
     let publisher: String?
     let url: String?
-    let lastCheckedOut: String?
-    let lastCheckedOutBy: String?
+    var lastCheckedOut: String?
+    var lastCheckedOutBy: String?
     
     // MARK: Lifecycle
     init(author: String,

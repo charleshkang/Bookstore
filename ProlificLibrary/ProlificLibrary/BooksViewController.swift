@@ -20,6 +20,7 @@ class BooksViewController: UIViewController, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         refreshControl.attributedTitle = NSAttributedString(string: "Pulling new books!")
         refreshControl.addTarget(self, action: #selector(BooksViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)

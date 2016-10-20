@@ -20,22 +20,23 @@ class BookDetailViewController: UIViewController {
     internal var allBooks = [Book]()
     internal var selectedIndex = 0
     internal var book: Book!
+    internal var booksRequester = BooksRequester()
+    internal var alertController: UIAlertController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setLabels()
     }
     
-    func setLabels() {
+    private func setLabels() {
         titleLabel.text = book.title
         authorLabel.text = book.author
         publisherLabel.text = book.publisher
         tagsLabel.text = book.category
         lastCheckedOutLabel.text = "\(book.lastCheckedOutBy) on \(book.lastCheckedOut)"
     }
-    
-    @IBAction func checkoutBookAction(sender: AnyObject) {
-        let actionSheet = UIAlertController(title: "!", message: "Share this book", preferredStyle: UIAlertControllerStyle.ActionSheet)
+    @IBAction func shareBookAction(sender: UIBarButtonItem) {
+        let actionSheet = UIAlertController(title: "", message: "Share this book", preferredStyle: UIAlertControllerStyle.ActionSheet)
         let tweetAction = UIAlertAction(title: "Share on Twitter", style: UIAlertActionStyle.Default) { (action) -> Void in
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
                 let twitterComposeVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
@@ -69,9 +70,31 @@ class BookDetailViewController: UIViewController {
         presentViewController(actionSheet, animated: true, completion: nil)
     }
     
-    func showAlertMessage(message: String!) {
-        let alertController = UIAlertController(title: "EasyShare", message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alertController.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+    @IBAction func checkoutBookAction(sender: AnyObject) {
+        alertController = UIAlertController(title: "Checkout", message: "Who's checking out this book?", preferredStyle: .Alert)
+        let checkoutAction = UIAlertAction(title: "Checkout", style: .Default) { (action: UIAlertAction) -> Void in
+            let textField = self.alertController.textFields!.first
+            textField?.placeholder = "Name"
+            self.saveCheckOutName(textField!.text!)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Destructive, handler: nil)
+        alertController.addAction(checkoutAction)
+        alertController.addAction(cancelAction)
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func saveCheckOutName(name: String) {
+        book.lastCheckedOutBy = name
+        booksRequester.update(book)
+        
+        self.navigationController?.popToRootViewControllerAnimated(true)
+    }
+    
+    private func showAlertMessage(message: String!) {
+        let alertController = UIAlertController(title: "Prolific Library", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         presentViewController(alertController, animated: true, completion: nil)
     }
 }
