@@ -53,8 +53,8 @@ class AddBookTableViewController: UITableViewController {
                         title: titleTextField.text!,
                         publisher: publisherTextField.text,
                         url: nil,
-                        lastCheckedOut: nil,
-                        lastCheckedOutBy: nil)
+                        lastCheckedOut: "",
+                        lastCheckedOutBy: "")
         booksRequester.post(book, completion: { (response) in
             self.dismissViewControllerAnimated(true, completion: nil)
         })

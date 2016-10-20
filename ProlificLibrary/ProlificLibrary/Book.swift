@@ -15,8 +15,8 @@ public struct Book {
     let title: String
     let publisher: String?
     let url: String?
-    var lastCheckedOut: String?
-    var lastCheckedOutBy: String?
+    var lastCheckedOut: String
+    var lastCheckedOutBy: String
     
     // MARK: Lifecycle
     init(author: String,
@@ -25,8 +25,8 @@ public struct Book {
          title: String,
          publisher: String?,
          url: String?,
-         lastCheckedOut: String?,
-         lastCheckedOutBy: String?) {
+         lastCheckedOut: String,
+         lastCheckedOutBy: String) {
         
         self.author = author
         self.tags = tags

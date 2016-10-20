@@ -36,8 +36,8 @@ public class BooksRequester {
                             title: value["title"].stringValue,
                             publisher: publisher,
                             url: value["url"].stringValue,
-                            lastCheckedOut: value["lastCheckedOut"].string,
-                            lastCheckedOutBy: value["lastCheckedOutBy"].string))
+                            lastCheckedOut: value["lastCheckedOut"].stringValue,
+                            lastCheckedOutBy: value["lastCheckedOutBy"].stringValue))
                     }
                     main { completion?(.Success(allBooks)) }
                 }
@@ -73,8 +73,17 @@ public class BooksRequester {
     }
     
     public func update(book: Book) {
+        let parameters: [String: AnyObject] = [
+            "lastCheckedOutBy": book.lastCheckedOutBy,
+            "lastCheckedOut" : book.lastCheckedOut
+        ]
+        
+        Alamofire.request(.PUT, "\(Constants.allBooksPath)\(book.id!)", parameters: parameters).responseJSON { response in
+            if let error = response.result.error {
+                print("\(Constants.allBooksPath)\(book.id!)")
+                print("error trying to update on /post/\(book.id!)")
+            }
+        }
         
     }
-    
-    
 }
