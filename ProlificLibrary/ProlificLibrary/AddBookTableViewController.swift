@@ -10,12 +10,12 @@ import UIKit
 
 class AddBookTableViewController: UITableViewController {
     
-    @IBOutlet weak var categoryTextField: UITextField!
-    @IBOutlet weak var publisherTextField: UITextField!
-    @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var authorTextField: UITextField!
+    @IBOutlet private weak var categoryTextField: UITextField!
+    @IBOutlet private weak var publisherTextField: UITextField!
+    @IBOutlet private weak var titleTextField: UITextField!
+    @IBOutlet private weak var authorTextField: UITextField!
     
-    let booksRequester = BooksRequester()
+    private let booksRequester = BooksRequester()
     
     @IBAction func cancelAction(sender: UIBarButtonItem) {
         guard authorTextField.isNilOrEmpty &&
@@ -36,6 +36,28 @@ class AddBookTableViewController: UITableViewController {
     }
     
     @IBAction func doneAction(sender: UIBarButtonItem) {
+        if titleTextField.text == "" || authorTextField.text == "" {
+            let alertController = UIAlertController(title: "Missing Title or Author", message: "Please fill in the required fields", preferredStyle: .Alert)
+            let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+            alertController.addAction(OKAction)
+            presentViewController(alertController, animated: true, completion: nil)
+        } else {
+            addNewBook()
+        }
+    }
+    
+    private func addNewBook() {
+        let book = Book(author: authorTextField.text!,
+                        category: categoryTextField.text!,
+                        id: nil,
+                        title: titleTextField.text!,
+                        publisher: publisherTextField.text,
+                        url: nil,
+                        lastCheckedOut: nil,
+                        lastCheckedOutBy: nil)
+        booksRequester.post(book, completion: { (response) in
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
     }
 }
 
@@ -48,25 +70,8 @@ extension AddBookTableViewController: UITextFieldDelegate {
             alertController.addAction(OKAction)
             presentViewController(alertController, animated: true, completion: nil)
         } else {
-            let book = Book(author: authorTextField.text!,
-                            category: categoryTextField.text!,
-                            id: nil,
-                            title: titleTextField.text!,
-                            publisher: publisherTextField.text,
-                            url: nil,
-                            lastCheckedOut: nil,
-                            lastCheckedOutBy: nil)
-            booksRequester.post(book, completion: { (response) in
-                self.dismissViewControllerAnimated(true, completion: nil)
-            })
-        }
+            addNewBook()        }
         textField.resignFirstResponder()
         return true
-    }
-}
-
-extension UITextField {
-    var isNilOrEmpty: Bool {
-        return self.text?.isEmpty ?? true
     }
 }

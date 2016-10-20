@@ -14,6 +14,7 @@
 		530441731DB5FB890011BDF5 /* BooksRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530441721DB5FB890011BDF5 /* BooksRequester.swift */; };
 		5325FEA31DB694BA0022E0C3 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5325FEA21DB694BA0022E0C3 /* Book.swift */; };
 		5325FEA51DB6984F0022E0C3 /* BookStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5325FEA41DB6984F0022E0C3 /* BookStatus.swift */; };
+		532603091DB9440800989A84 /* UITextField+EmptyTextFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 532603081DB9440800989A84 /* UITextField+EmptyTextFields.swift */; };
 		5357A3CC1DB8380B0068F1C1 /* AddBookTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5357A3CB1DB8380B0068F1C1 /* AddBookTableViewController.swift */; };
 		5357A3CE1DB85F0E0068F1C1 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5357A3CD1DB85F0E0068F1C1 /* Alert.swift */; };
 		53B17B001DB5DF1E00B8D448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B17AFF1DB5DF1E00B8D448 /* AppDelegate.swift */; };
@@ -43,6 +44,7 @@
 		530441721DB5FB890011BDF5 /* BooksRequester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BooksRequester.swift; sourceTree = "<group>"; };
 		5325FEA21DB694BA0022E0C3 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		5325FEA41DB6984F0022E0C3 /* BookStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookStatus.swift; sourceTree = "<group>"; };
+		532603081DB9440800989A84 /* UITextField+EmptyTextFields.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+EmptyTextFields.swift"; sourceTree = "<group>"; };
 		5357A3CB1DB8380B0068F1C1 /* AddBookTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBookTableViewController.swift; sourceTree = "<group>"; };
 		5357A3CD1DB85F0E0068F1C1 /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		53B17AFC1DB5DF1E00B8D448 /* ProlificLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProlificLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,7 +91,6 @@
 				53B17B061DB5DF1E00B8D448 /* Assets.xcassets */,
 				53B17B081DB5DF1E00B8D448 /* LaunchScreen.storyboard */,
 				53B17B0B1DB5DF1E00B8D448 /* Info.plist */,
-				5326ED151DB6E6570039C41B /* Extensions */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -126,6 +127,7 @@
 		5326ED151DB6E6570039C41B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				532603081DB9440800989A84 /* UITextField+EmptyTextFields.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -158,6 +160,7 @@
 				530441711DB5E33B0011BDF5 /* Model */,
 				5325FE9F1DB693D50022E0C3 /* View */,
 				530441701DB5E3350011BDF5 /* Controller */,
+				5326ED151DB6E6570039C41B /* Extensions */,
 				530441651DB5DFC50011BDF5 /* Supporting Files */,
 			);
 			path = ProlificLibrary;
@@ -402,6 +405,7 @@
 				5304416D1DB5E3120011BDF5 /* BookDetailViewController.swift in Sources */,
 				5357A3CE1DB85F0E0068F1C1 /* Alert.swift in Sources */,
 				530441731DB5FB890011BDF5 /* BooksRequester.swift in Sources */,
+				532603091DB9440800989A84 /* UITextField+EmptyTextFields.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,7 +10,7 @@ import UIKit
 
 class BooksViewController: UIViewController, UITableViewDelegate {
     
-@IBOutlet var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
     private let bookRequester = BooksRequester()
     private var allBooks = [Book]()
     private let refreshControl = UIRefreshControl()
@@ -45,7 +45,7 @@ class BooksViewController: UIViewController, UITableViewDelegate {
         }
     }
     // MARK: - Actions
-    func refresh() {
+    private func refresh() {
         bookRequester.getBooks { books in
             switch books {
             case.Success(let books):
@@ -59,7 +59,6 @@ class BooksViewController: UIViewController, UITableViewDelegate {
             }
         }
     }
-    
     @IBAction func clearAllBooks(sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: "Clear all?", message: "Are you sure you want to clear all books?", preferredStyle: .Alert)
         let deleteAction = UIAlertAction(title: "Delete", style: .Destructive) { (action: UIAlertAction) -> Void in
@@ -99,5 +98,13 @@ extension BooksViewController: UITableViewDataSource {
         let book = allBooks[indexPath.row]
         cell.configure(with: book)
         return cell
+    }
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            bookRequester.delete(allBooks[indexPath.row])
+            allBooks.removeAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Bottom)
+            tableView.reloadData()
+        }
     }
 }

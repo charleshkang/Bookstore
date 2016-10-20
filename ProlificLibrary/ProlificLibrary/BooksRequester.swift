@@ -21,7 +21,7 @@ public func background(function: () -> Void) {
 public class BooksRequester {
     public func getBooks(`for` completion: ((Result<[Book]>) -> Void)?) {
         background {
-            Alamofire.request(.GET, "\(Constants.baseURL)\(Constants.allBooksPath)").responseJSON { (response) in
+            Alamofire.request(.GET, Constants.allBooksPath).responseJSON { (response) in
                 if let _ = response.result.value {
                     let json = JSON(data: response.data!)
                     var allBooks = [Book]()
@@ -43,16 +43,17 @@ public class BooksRequester {
     }
     
     public func delete(book: Book) {
-        Alamofire.request(.DELETE, "\(Constants.baseURL)\(book.id)").responseJSON { (response) in
+        Alamofire.request(.DELETE, "\(Constants.allBooksPath)\(book.id!)").responseJSON { (response) in
             if let error = response.result.error {
                 let alert = Alert()
+                print("\(Constants.baseURLPath)\(book.id!)")
                 alert.error("Something went wrong", title: "\(error)")
             }
         }
     }
     
     public func deleteAll(books: [Book], completion: (Response<AnyObject, NSError>) -> Void) {
-        Alamofire.request(.DELETE, "\(Constants.baseURL)\(Constants.clearBooksPath)").responseJSON { Void in
+        Alamofire.request(.DELETE, Constants.clearBooksPath).responseJSON { Void in
         }
     }
     
@@ -63,8 +64,7 @@ public class BooksRequester {
             "categories": book.category,
             "publisher": book.publisher!
         ]
-        Alamofire.request(.POST,
-            "\(Constants.baseURL)\(Constants.allBooksPath)",
+        Alamofire.request(.POST, Constants.allBooksPath,
             parameters: newBookParams,
             encoding: .JSON).responseJSON(completionHandler: completion)
     }
