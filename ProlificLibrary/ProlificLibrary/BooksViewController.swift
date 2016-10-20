@@ -36,7 +36,8 @@ class BooksViewController: UIViewController, UITableViewDelegate {
                 }
             case.Failure(let error):
                 self.activityIndicator.stopAnimating()
-                self.alert.error("\(error)", title: "Error")
+                let alertController = UIAlertController(title: "Error", message: "\(error)", preferredStyle: .Alert)
+                self.presentViewController(alertController, animated: true, completion: nil)
             }
         }
     }
@@ -45,8 +46,8 @@ class BooksViewController: UIViewController, UITableViewDelegate {
         let alertController = UIAlertController(title: "Clear all?", message: "Are you sure you want to clear all books?", preferredStyle: .Alert)
         let deleteAction = UIAlertAction(title: "Delete", style: .Destructive) { (action: UIAlertAction) -> Void in
             
-            self.bookRequester.deleteAll(self.allBooks) { (_) in
-                self.refresh()
+            self.bookRequester.deleteAll(self.allBooks) { Void in
+//                self.refresh()
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)

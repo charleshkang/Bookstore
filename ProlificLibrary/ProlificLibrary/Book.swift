@@ -10,26 +10,26 @@ import Foundation
 
 public struct Book {
     let author: String
-    let categories: String
-    let id: Int
+    let category: String
+    let id: Int?
     let title: String
     let publisher: String?
-    let url: String
+    let url: String?
     let lastCheckedOut: String?
     let lastCheckedOutBy: String?
     
     // MARK: Lifecycle
     init(author: String,
          categories: String,
-         id: Int,
+         id: Int?,
          title: String,
          publisher: String?,
-         url: String,
+         url: String?,
          lastCheckedOut: String?,
          lastCheckedOutBy: String?) {
         
         self.author = author
-        self.categories = categories
+        self.category = categories
         self.id = id
         self.title = title
         self.publisher = publisher

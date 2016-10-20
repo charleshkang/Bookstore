@@ -51,17 +51,27 @@ public class BooksRequester {
         }
     }
     
-    public func deleteAll(books: [Book], `for` completion: (Response<AnyObject, NSError>) -> Void) {
-        Alamofire.request(.DELETE, "\(Constants.baseURL)\(Constants.clearBooksPath)").responseJSON { response in
-            if let error = response.result.error {
-                let alert = Alert()
-                alert.error("Something went wrong", title: "\(error)")
-            }
+    public func deleteAll(books: [Book], completion: (Response<AnyObject, NSError>) -> Void) {
+        Alamofire.request(.DELETE, "\(Constants.baseURL)\(Constants.clearBooksPath)").responseJSON { (response) in
+//            if let error = response.result.error {
+//                let alert = Alert()
+//                print("\(Constants.baseURL)\(Constants.clearBooksPath)")
+//                alert.error("\(error)", title: "Error")
+//            }
         }
     }
     
-    public func post(book: Book, `for` completion: (Response<AnyObject, NSError>) -> Void) {
-        
+    public func post(book: Book, completion: (Response<AnyObject, NSError>) -> Void) {
+        let newBookParams: [String: AnyObject] = [
+            "author": book.author,
+            "title": book.title,
+            "categories": book.category,
+            "publisher": book.publisher!
+        ]
+        Alamofire.request(.POST,
+            "\(Constants.baseURL)\(Constants.allBooksPath)",
+            parameters: newBookParams,
+            encoding: .JSON).responseJSON(completionHandler: completion)
     }
     
     public func update(book: Book) {
