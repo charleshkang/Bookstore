@@ -10,7 +10,7 @@ import Foundation
 
 public struct Book {
     let author: String
-    let category: String
+    let tags: String?
     let id: Int?
     let title: String
     let publisher: String?
@@ -20,7 +20,7 @@ public struct Book {
     
     // MARK: Lifecycle
     init(author: String,
-         category: String,
+         tags: String?,
          id: Int?,
          title: String,
          publisher: String?,
@@ -29,7 +29,7 @@ public struct Book {
          lastCheckedOutBy: String?) {
         
         self.author = author
-        self.category = category
+        self.tags = tags
         self.id = id
         self.title = title
         self.publisher = publisher

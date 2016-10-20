@@ -25,13 +25,16 @@ public class BooksRequester {
                 if let _ = response.result.value {
                     let json = JSON(data: response.data!)
                     var allBooks = [Book]()
-                    
                     for (_, value) in json {
+                        let rawPublisher = value["publisher"].string
+                        let publisher = rawPublisher!.isEmpty ? nil : rawPublisher
+                        let rawTags = value["categories"].string
+                        let tags = rawTags!.isEmpty ? nil : rawTags
                         allBooks.append(Book(author: value["author"].stringValue,
-                            category: value["categories"].stringValue,
+                            tags: tags,
                             id: value["id"].intValue,
                             title: value["title"].stringValue,
-                            publisher: value["publisher"].stringValue,
+                            publisher: publisher,
                             url: value["url"].stringValue,
                             lastCheckedOut: value["lastCheckedOut"].string,
                             lastCheckedOutBy: value["lastCheckedOutBy"].string))
@@ -61,7 +64,7 @@ public class BooksRequester {
         let newBookParams: [String: AnyObject] = [
             "author": book.author,
             "title": book.title,
-            "categories": book.category,
+            "categories": book.tags!,
             "publisher": book.publisher!
         ]
         Alamofire.request(.POST, Constants.allBooksPath,

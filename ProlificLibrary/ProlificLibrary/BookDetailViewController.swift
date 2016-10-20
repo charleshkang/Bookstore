@@ -16,6 +16,7 @@ class BookDetailViewController: UIViewController {
     @IBOutlet weak var publisherLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var checkoutButton: UIButton!
     
     internal var allBooks = [Book]()
     internal var selectedIndex = 0
@@ -26,17 +27,20 @@ class BookDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setLabels()
+        checkoutButton.layer.cornerRadius = 5
     }
     
     private func setLabels() {
         titleLabel.text = book.title
         authorLabel.text = book.author
-        publisherLabel.text = book.publisher
-        tagsLabel.text = book.category
+        
+        publisherLabel.text = book.publisher.map { "Publisher: \($0)" } ?? "Publisher not available"
+        tagsLabel.text = book.tags.map { "Tags: \($0)" } ?? "Tags not available"
+        
         lastCheckedOutLabel.text = "\(book.lastCheckedOutBy) on \(book.lastCheckedOut)"
     }
     @IBAction func shareBookAction(sender: UIBarButtonItem) {
-        let actionSheet = UIAlertController(title: "", message: "Share this book", preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let actionSheet = UIAlertController(title: "", message: "Share \(book.title)", preferredStyle: UIAlertControllerStyle.ActionSheet)
         let tweetAction = UIAlertAction(title: "Share on Twitter", style: UIAlertActionStyle.Default) { (action) -> Void in
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
                 let twitterComposeVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
@@ -71,16 +75,20 @@ class BookDetailViewController: UIViewController {
     }
     
     @IBAction func checkoutBookAction(sender: AnyObject) {
-        alertController = UIAlertController(title: "Checkout", message: "Who's checking out this book?", preferredStyle: .Alert)
-        let checkoutAction = UIAlertAction(title: "Checkout", style: .Default) { (action: UIAlertAction) -> Void in
+        alertController = UIAlertController(title: "Checkout \(book.title)", message: "Who's checking this out?", preferredStyle: .Alert)
+        let checkoutAction = UIAlertAction(title: "Cancel", style: .Default) { (action: UIAlertAction) -> Void in
             let textField = self.alertController.textFields!.first
             textField?.placeholder = "Name"
             self.saveCheckOutName(textField!.text!)
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Destructive, handler: nil)
+        let cancelAction = UIAlertAction(title: "Checkout", style: .Default, handler: nil)
         alertController.addAction(checkoutAction)
         alertController.addAction(cancelAction)
+        
+        alertController.addTextFieldWithConfigurationHandler({ (textfield: UITextField) -> Void in
+            
+        })
         
         self.presentViewController(alertController, animated: true, completion: nil)
     }

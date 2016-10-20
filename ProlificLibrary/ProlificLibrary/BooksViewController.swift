@@ -84,8 +84,9 @@ class BooksViewController: UIViewController, UITableViewDelegate {
     }
 }
 
-//MARK: - UITableViewDataSource
+//MARK: - UITableViewDataSource Functions
 extension BooksViewController: UITableViewDataSource {
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -103,8 +104,9 @@ extension BooksViewController: UITableViewDataSource {
         if editingStyle == .Delete {
             bookRequester.delete(allBooks[indexPath.row])
             allBooks.removeAtIndex(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Bottom)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             tableView.reloadData()
         }
     }
+    
 }

@@ -48,7 +48,7 @@ class AddBookTableViewController: UITableViewController {
     
     private func addNewBook() {
         let book = Book(author: authorTextField.text!,
-                        category: categoryTextField.text!,
+                        tags: categoryTextField.text!,
                         id: nil,
                         title: titleTextField.text!,
                         publisher: publisherTextField.text,
@@ -62,10 +62,10 @@ class AddBookTableViewController: UITableViewController {
 }
 
 extension AddBookTableViewController: UITextFieldDelegate {
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        
         if titleTextField.text == "" || authorTextField.text == "" {
-            let alertController = UIAlertController(title: "Missing Title or Author", message: "Please fill in the required fields", preferredStyle: .Alert)
+            let alertController = UIAlertController(title: "Missing Title or Author", message: "Please fill in the required fields.", preferredStyle: .Alert)
             let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
             alertController.addAction(OKAction)
             presentViewController(alertController, animated: true, completion: nil)
@@ -74,4 +74,5 @@ extension AddBookTableViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
+    
 }
