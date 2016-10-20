@@ -20,7 +20,7 @@ public struct Book {
     
     // MARK: Lifecycle
     init(author: String,
-         categories: String,
+         category: String,
          id: Int?,
          title: String,
          publisher: String?,
@@ -29,7 +29,7 @@ public struct Book {
          lastCheckedOutBy: String?) {
         
         self.author = author
-        self.category = categories
+        self.category = category
         self.id = id
         self.title = title
         self.publisher = publisher

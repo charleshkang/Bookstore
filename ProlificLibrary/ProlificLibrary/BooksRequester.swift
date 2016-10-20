@@ -28,7 +28,7 @@ public class BooksRequester {
                     
                     for (_, value) in json {
                         allBooks.append(Book(author: value["author"].stringValue,
-                            categories: value["categories"].stringValue,
+                            category: value["categories"].stringValue,
                             id: value["id"].intValue,
                             title: value["title"].stringValue,
                             publisher: value["publisher"].stringValue,
@@ -52,12 +52,7 @@ public class BooksRequester {
     }
     
     public func deleteAll(books: [Book], completion: (Response<AnyObject, NSError>) -> Void) {
-        Alamofire.request(.DELETE, "\(Constants.baseURL)\(Constants.clearBooksPath)").responseJSON { (response) in
-//            if let error = response.result.error {
-//                let alert = Alert()
-//                print("\(Constants.baseURL)\(Constants.clearBooksPath)")
-//                alert.error("\(error)", title: "Error")
-//            }
+        Alamofire.request(.DELETE, "\(Constants.baseURL)\(Constants.clearBooksPath)").responseJSON { Void in
         }
     }
     

@@ -17,6 +17,7 @@ class AddBookTableViewController: UITableViewController {
     
     let booksRequester = BooksRequester()
     
+    
     @IBAction func doneAction(sender: UIBarButtonItem) {
         if titleTextField.text == "" || authorTextField.text == "" {
             let alertController = UIAlertController(title: "Missing Title or Author", message: "Please fill in the required fields", preferredStyle: .Alert)
@@ -25,7 +26,7 @@ class AddBookTableViewController: UITableViewController {
             presentViewController(alertController, animated: true, completion: nil)
         } else {
             let book = Book(author: authorTextField.text!,
-                            categories: categoryTextField.text!,
+                            category: categoryTextField.text!,
                             id: nil,
                             title: titleTextField.text!,
                             publisher: publisherTextField.text,
@@ -52,7 +53,7 @@ extension AddBookTableViewController: UITextFieldDelegate {
             presentViewController(alertController, animated: true, completion: nil)
         } else {
             let book = Book(author: authorTextField.text!,
-                            categories: categoryTextField.text!,
+                            category: categoryTextField.text!,
                             id: nil,
                             title: titleTextField.text!,
                             publisher: publisherTextField.text,
