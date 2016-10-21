@@ -17,7 +17,7 @@ public func background(function: () -> Void) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), function)
 }
 public final class BooksRequester {
-
+    
     public func getBooks(`for` completion: ((Result<[Book]>) -> Void)?) {
         var allBooks = [Book]()
         background {
@@ -28,6 +28,7 @@ public final class BooksRequester {
                         let publisher = rawPublisher!.isEmpty ? nil : rawPublisher
                         let rawTags = value["categories"].string
                         let tags = rawTags!.isEmpty ? nil : rawTags
+                        
                         allBooks.append(Book(author: value["author"].stringValue,
                             tags: tags,
                             id: value["id"].intValue,
@@ -37,6 +38,16 @@ public final class BooksRequester {
                             lastCheckedOut: value["lastCheckedOut"].stringValue,
                             lastCheckedOutBy: value["lastCheckedOutBy"].stringValue))
                     }
+                    guard let statusCode = response.response?.statusCode  else {
+                        main { completion?(.Failure(.UnexpectedError)) }
+                        return
+                    }
+                    guard statusCode == SuccessStatusCode.OK.rawValue else {
+                        print(statusCode)
+                        main { completion?(.Failure(RequestError(code: statusCode))) }
+                        return
+                    }
+                    
                     main { completion?(.Success(allBooks)) }
                 }
             }
@@ -59,7 +70,7 @@ public final class BooksRequester {
             "lastCheckedOut": book.lastCheckedOut
         ]
         if let id = book.id {
-            Alamofire.request(.PUT, "\(Constant.allBooksPath)\(id)", parameters: parameters).responseJSON { response in
+            Alamofire.request(.PUT, "\(Constant.allBooksPath)\(id)", parameters: parameters).responseJSON { (response) in
                 if let error = response.result.error {
                     let alert = Alert()
                     alert.error("\(error)", title: "Error")
@@ -78,7 +89,7 @@ public final class BooksRequester {
         }
     }
     public func deleteAll(books: [Book], completion: (Response<AnyObject, NSError>) -> Void) {
-        Alamofire.request(.DELETE, Constant.clearBooksPath).responseJSON { Void in
+        Alamofire.request(.DELETE, Constant.clearBooksPath).responseJSON { _ in
         }
     }
     

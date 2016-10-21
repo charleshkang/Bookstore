@@ -68,8 +68,8 @@ public class BooksViewController: UIViewController, UITableViewDelegate {
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-        alertController.addAction(cancelAction)
         alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     // MARK: Navigation
@@ -80,7 +80,6 @@ public class BooksViewController: UIViewController, UITableViewDelegate {
                 let indexPath: NSIndexPath = tableView.indexPathForSelectedRow!
                 detailVC.book = allBooks[indexPath.row]
             }
-            
         }
     }
     
