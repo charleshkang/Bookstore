@@ -108,7 +108,6 @@
 		530441711DB5E33B0011BDF5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5357A3CD1DB85F0E0068F1C1 /* Alert.swift */,
 				5325FEA41DB6984F0022E0C3 /* BookStatus.swift */,
 				5325FEA21DB694BA0022E0C3 /* Book.swift */,
 				530441721DB5FB890011BDF5 /* BooksRequester.swift */,
@@ -119,6 +118,7 @@
 		5325FE9F1DB693D50022E0C3 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5357A3CD1DB85F0E0068F1C1 /* Alert.swift */,
 				5304416A1DB5DFFE0011BDF5 /* BookTableViewCell.swift */,
 			);
 			name = View;
