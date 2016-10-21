@@ -50,6 +50,8 @@ pod install
 - Press the trash button to delete all books
 - Press on any book to see details, as well as check out a book
 - Asynchronous handling of data fetching, as to not block the UI from making updates
+- Share the book on Twitter or Facebook using the Social framework. You will need to be signed into Facebook or Twitter for sharing to work.
 
 ## Future Improvements and Features
 - Unit Tests
+- Implement handling when title and author fields are inputted as `" " `
