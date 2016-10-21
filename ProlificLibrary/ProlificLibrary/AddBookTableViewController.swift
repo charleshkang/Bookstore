@@ -21,6 +21,7 @@ public class AddBookTableViewController: UITableViewController {
     
     // MARK: Actions
     @IBAction private func cancelAction(sender: UIBarButtonItem) {
+
         guard authorTextField.isNilOrEmpty &&
             titleTextField.isNilOrEmpty &&
             publisherTextField.isNilOrEmpty &&
@@ -63,6 +64,7 @@ public class AddBookTableViewController: UITableViewController {
     
 }
 
+//MARK: UITextFieldDelagate Functions
 extension AddBookTableViewController: UITextFieldDelegate {
     
     public func textFieldShouldReturn(textField: UITextField) -> Bool {

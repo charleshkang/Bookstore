@@ -17,14 +17,13 @@ public func background(function: () -> Void) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), function)
 }
 public final class BooksRequester {
-    
+
     public func getBooks(`for` completion: ((Result<[Book]>) -> Void)?) {
+        var allBooks = [Book]()
         background {
             Alamofire.request(.GET, Constant.allBooksPath).responseJSON { (response) in
-                if let _ = response.result.value {
-                    let json = JSON(data: response.data!)
-                    var allBooks = [Book]()
-                    for (_, value) in json {
+                if let json = response.data {
+                    for (_, value) in JSON(data: json) {
                         let rawPublisher = value["publisher"].string
                         let publisher = rawPublisher!.isEmpty ? nil : rawPublisher
                         let rawTags = value["categories"].string
@@ -47,30 +46,34 @@ public final class BooksRequester {
         let newBookParams: [String: AnyObject] = [
             "author": book.author,
             "title": book.title,
-            "categories": book.tags!,
-            "publisher": book.publisher!
+            "categories": book.tags ?? "",
+            "publisher": book.publisher ?? ""
         ]
         Alamofire.request(.POST, Constant.allBooksPath,
             parameters: newBookParams,
             encoding: .JSON).responseJSON(completionHandler: completion)
     }
-    public func update(book: Book) {
+    public func update(with book: Book) {
         let parameters: [String: AnyObject] = [
             "lastCheckedOutBy": book.lastCheckedOutBy,
             "lastCheckedOut": book.lastCheckedOut
         ]
-        Alamofire.request(.PUT, "\(Constant.allBooksPath)\(book.id!)", parameters: parameters).responseJSON { response in
-            if let error = response.result.error {
-                let alert = Alert()
-                alert.error("\(error)", title: "Error")
+        if let id = book.id {
+            Alamofire.request(.PUT, "\(Constant.allBooksPath)\(id)", parameters: parameters).responseJSON { response in
+                if let error = response.result.error {
+                    let alert = Alert()
+                    alert.error("\(error)", title: "Error")
+                }
             }
         }
     }
     public func delete(book: Book) {
-        Alamofire.request(.DELETE, "\(Constant.allBooksPath)\(book.id!)").responseJSON { (response) in
-            if let error = response.result.error {
-                let alert = Alert()
-                alert.error("\(error)", title: "Error")
+        if let id = book.id {
+            Alamofire.request(.DELETE, "\(Constant.allBooksPath)\(id)").responseJSON { (response) in
+                if let error = response.result.error {
+                    let alert = Alert()
+                    alert.error("\(error)", title: "Error")
+                }
             }
         }
     }

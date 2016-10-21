@@ -75,10 +75,12 @@ public class BooksViewController: UIViewController, UITableViewDelegate {
     // MARK: Navigation
     override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.destinationViewController.isKindOfClass(BookDetailViewController) {
-            let detailVC = segue.destinationViewController as! BookDetailViewController
-            detailVC.allBooks = allBooks
-            let indexPath: NSIndexPath = tableView.indexPathForSelectedRow!
-            detailVC.book = allBooks[indexPath.row]
+            if let detailVC = segue.destinationViewController as? BookDetailViewController {
+                detailVC.allBooks = allBooks
+                let indexPath: NSIndexPath = tableView.indexPathForSelectedRow!
+                detailVC.book = allBooks[indexPath.row]
+            }
+            
         }
     }
     
