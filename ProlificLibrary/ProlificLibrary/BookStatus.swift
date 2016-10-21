@@ -11,11 +11,13 @@ import Foundation
 public enum Result<T> {
     case Success(T)
     case Failure(RequestError)
+    
 }
 
 public enum SuccessStatusCode: Int {
     case OK = 200
     case Created = 201
+    
 }
 
 public enum RequestError: ErrorType {
@@ -33,4 +35,5 @@ public enum RequestError: ErrorType {
         default: self = .UnexpectedError
         }
     }
+    
 }

@@ -9,6 +9,7 @@
 import Foundation
 
 public struct Book {
+    
     let author: String
     let tags: String?
     let id: Int?
@@ -37,4 +38,5 @@ public struct Book {
         self.lastCheckedOut = lastCheckedOut
         self.lastCheckedOutBy = lastCheckedOutBy
     }
+    
 }

@@ -8,16 +8,19 @@
 
 import UIKit
 
-class AddBookTableViewController: UITableViewController {
+public class AddBookTableViewController: UITableViewController {
     
+    // MARK: IBOutlets
     @IBOutlet private weak var categoryTextField: UITextField!
     @IBOutlet private weak var publisherTextField: UITextField!
     @IBOutlet private weak var titleTextField: UITextField!
     @IBOutlet private weak var authorTextField: UITextField!
     
+    // MARK: Private Properties
     private let booksRequester = BooksRequester()
     
-    @IBAction func cancelAction(sender: UIBarButtonItem) {
+    // MARK: Actions
+    @IBAction private func cancelAction(sender: UIBarButtonItem) {
         guard authorTextField.isNilOrEmpty &&
             titleTextField.isNilOrEmpty &&
             publisherTextField.isNilOrEmpty &&
@@ -34,8 +37,7 @@ class AddBookTableViewController: UITableViewController {
         }
         dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    @IBAction func doneAction(sender: UIBarButtonItem) {
+    @IBAction private func doneAction(sender: UIBarButtonItem) {
         if titleTextField.text == "" || authorTextField.text == "" {
             let alertController = UIAlertController(title: "Missing Title or Author", message: "Please fill in the required fields", preferredStyle: .Alert)
             let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
@@ -45,7 +47,6 @@ class AddBookTableViewController: UITableViewController {
             addNewBook()
         }
     }
-    
     private func addNewBook() {
         let book = Book(author: authorTextField.text!,
                         tags: categoryTextField.text!,
@@ -59,11 +60,12 @@ class AddBookTableViewController: UITableViewController {
             self.dismissViewControllerAnimated(true, completion: nil)
         })
     }
+    
 }
 
 extension AddBookTableViewController: UITextFieldDelegate {
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    public func textFieldShouldReturn(textField: UITextField) -> Bool {
         if titleTextField.text == "" || authorTextField.text == "" {
             let alertController = UIAlertController(title: "Missing Title or Author", message: "Please fill in the required fields.", preferredStyle: .Alert)
             let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)

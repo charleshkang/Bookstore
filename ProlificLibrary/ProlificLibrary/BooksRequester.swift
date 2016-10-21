@@ -6,22 +6,21 @@
 //  Copyright © 2016 Charles Kang. All rights reserved.
 //
 
+import Alamofire
 import Foundation
 import SwiftyJSON
-import Alamofire
 
 public func main(function: () -> Void) {
     dispatch_async(dispatch_get_main_queue(), function)
 }
-
 public func background(function: () -> Void) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), function)
 }
-
-public class BooksRequester {
+public final class BooksRequester {
+    
     public func getBooks(`for` completion: ((Result<[Book]>) -> Void)?) {
         background {
-            Alamofire.request(.GET, Constants.allBooksPath).responseJSON { (response) in
+            Alamofire.request(.GET, Constant.allBooksPath).responseJSON { (response) in
                 if let _ = response.result.value {
                     let json = JSON(data: response.data!)
                     var allBooks = [Book]()
@@ -44,22 +43,6 @@ public class BooksRequester {
             }
         }
     }
-    
-    public func delete(book: Book) {
-        Alamofire.request(.DELETE, "\(Constants.allBooksPath)\(book.id!)").responseJSON { (response) in
-            if let error = response.result.error {
-                let alert = Alert()
-                print("\(Constants.baseURLPath)\(book.id!)")
-                alert.error("Something went wrong", title: "\(error)")
-            }
-        }
-    }
-    
-    public func deleteAll(books: [Book], completion: (Response<AnyObject, NSError>) -> Void) {
-        Alamofire.request(.DELETE, Constants.clearBooksPath).responseJSON { Void in
-        }
-    }
-    
     public func post(book: Book, completion: (Response<AnyObject, NSError>) -> Void) {
         let newBookParams: [String: AnyObject] = [
             "author": book.author,
@@ -67,23 +50,33 @@ public class BooksRequester {
             "categories": book.tags!,
             "publisher": book.publisher!
         ]
-        Alamofire.request(.POST, Constants.allBooksPath,
+        Alamofire.request(.POST, Constant.allBooksPath,
             parameters: newBookParams,
             encoding: .JSON).responseJSON(completionHandler: completion)
     }
-    
     public func update(book: Book) {
         let parameters: [String: AnyObject] = [
             "lastCheckedOutBy": book.lastCheckedOutBy,
-            "lastCheckedOut" : book.lastCheckedOut
+            "lastCheckedOut": book.lastCheckedOut
         ]
-        
-        Alamofire.request(.PUT, "\(Constants.allBooksPath)\(book.id!)", parameters: parameters).responseJSON { response in
+        Alamofire.request(.PUT, "\(Constant.allBooksPath)\(book.id!)", parameters: parameters).responseJSON { response in
             if let error = response.result.error {
-                print("\(Constants.allBooksPath)\(book.id!)")
-                print("error trying to update on /post/\(book.id!)")
+                let alert = Alert()
+                alert.error("\(error)", title: "Error")
             }
         }
-        
     }
+    public func delete(book: Book) {
+        Alamofire.request(.DELETE, "\(Constant.allBooksPath)\(book.id!)").responseJSON { (response) in
+            if let error = response.result.error {
+                let alert = Alert()
+                alert.error("\(error)", title: "Error")
+            }
+        }
+    }
+    public func deleteAll(books: [Book], completion: (Response<AnyObject, NSError>) -> Void) {
+        Alamofire.request(.DELETE, Constant.clearBooksPath).responseJSON { Void in
+        }
+    }
+    
 }

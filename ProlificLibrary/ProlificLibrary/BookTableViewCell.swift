@@ -8,15 +8,18 @@
 
 import UIKit
 
-class BookTableViewCell: UITableViewCell {
+internal class BookTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var bookTitleLabel: UILabel!
-    @IBOutlet weak var bookAuthorLabel: UILabel!
+    // MARK: IBOutlets
+    @IBOutlet private weak var bookTitleLabel: UILabel!
+    @IBOutlet private weak var bookAuthorLabel: UILabel!
+    @IBOutlet private weak var bookTagsLabel: UILabel!
     
-    //MARK: Public
-    func configure(with book: Book) {
+    // MARK: Internal Actions
+    internal func configure(with book: Book) {
         bookTitleLabel.text = book.title
         bookAuthorLabel.text = book.author
+        bookTagsLabel.text = book.tags.map { "Tags: \($0)" } ?? "No tags 🤔📘"
     }
-
+    
 }

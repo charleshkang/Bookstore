@@ -6,42 +6,52 @@
 //  Copyright © 2016 Charles Kang. All rights reserved.
 //
 
-import UIKit
 import Social
+import UIKit
 
 class BookDetailViewController: UIViewController {
     
-    @IBOutlet weak var lastCheckedOutLabel: UILabel!
-    @IBOutlet weak var tagsLabel: UILabel!
-    @IBOutlet weak var publisherLabel: UILabel!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var authorLabel: UILabel!
-    @IBOutlet weak var checkoutButton: UIButton!
+    // MARK: IBOutlets
+    @IBOutlet private weak var lastCheckedOutLabel: UILabel!
+    @IBOutlet private weak var tagsLabel: UILabel!
+    @IBOutlet private weak var publisherLabel: UILabel!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var authorLabel: UILabel!
+    @IBOutlet private weak var checkoutButton: UIButton!
     
+    // MARK: Internal Properties
     internal var allBooks = [Book]()
-    internal var selectedIndex = 0
     internal var book: Book!
-    internal var dateStamp: String!
-    internal var booksRequester = BooksRequester()
-    internal var alertController: UIAlertController!
     
+    // MARK: Private Properties
+    private var selectedIndex = 0
+    private var dateStamp = ""
+    private var booksRequester = BooksRequester()
+    private var alertController: UIAlertController!
+    
+    // MARK: View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setLabels()
-        
         dateStamp = NSDateFormatter.localizedStringFromDate(NSDate(), dateStyle: .ShortStyle, timeStyle: .ShortStyle)
     }
-    
+    // MARK: Actions
     private func setLabels() {
         titleLabel.text = book.title
         authorLabel.text = book.author
         checkoutButton.layer.cornerRadius = 5
         publisherLabel.text = book.publisher.map { "Publisher: \($0)" } ?? "Publisher not available"
-        tagsLabel.text = book.tags.map { "Tags: \($0)" } ?? "Tags not available"
+        tagsLabel.text = book.tags.map { "Tags: \($0)" } ?? "No tags 🤔📘"
         
-        lastCheckedOutLabel.text = "Checked out by: \(book.lastCheckedOutBy) on \(book.lastCheckedOut)"
+        if book.lastCheckedOutBy.isEmpty && book.lastCheckedOut.isEmpty {
+            lastCheckedOutLabel.textColor = UIColor.greenColor()
+            lastCheckedOutLabel.text = "Available for checkout"
+        } else {
+            lastCheckedOutLabel.textColor = UIColor.redColor()
+            lastCheckedOutLabel.text = "Checked out by: \(book.lastCheckedOutBy) on \(book.lastCheckedOut)"
+        }
     }
-    @IBAction func shareBookAction(sender: UIBarButtonItem) {
+    @IBAction private func shareBookAction(sender: UIBarButtonItem) {
         let actionSheet = UIAlertController(title: "", message: "Share \(book.title)", preferredStyle: UIAlertControllerStyle.ActionSheet)
         let tweetAction = UIAlertAction(title: "Share on Twitter", style: UIAlertActionStyle.Default) { (action) -> Void in
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
@@ -53,21 +63,18 @@ class BookDetailViewController: UIViewController {
                 self.showAlertMessage("Please connect to your Twitter account.")
             }
         }
-        let facebookPostAction = UIAlertAction(title: "Share on Facebook", style: UIAlertActionStyle.Default) { (action) -> Void in
+        let facebookPostAction = UIAlertAction(title: "Share on Facebook", style: UIAlertActionStyle.Default) { _ in
             
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
                 let facebookComposeVC = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
-                
                 facebookComposeVC.setInitialText("I just checked out this cool book from the Prolific Library: \(self.titleLabel.text)")
-                
                 self.presentViewController(facebookComposeVC, animated: true, completion: nil)
             }
             else {
                 self.showAlertMessage("Please connect to your Facebook account.")
             }
         }
-        
-        let dismissAction = UIAlertAction(title: "Close", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+        let dismissAction = UIAlertAction(title: "Close", style: UIAlertActionStyle.Cancel) { _ in
         }
         actionSheet.addAction(tweetAction)
         actionSheet.addAction(facebookPostAction)
@@ -75,36 +82,32 @@ class BookDetailViewController: UIViewController {
         
         presentViewController(actionSheet, animated: true, completion: nil)
     }
-    
-    @IBAction func checkoutBookAction(sender: AnyObject) {
-        alertController = UIAlertController(title: "Checkout \(book.title)", message: "Your name", preferredStyle: .Alert)
+    @IBAction private func checkoutBookAction(sender: AnyObject) {
+        alertController = UIAlertController(title: "Checkout: \(book.title)", message: "Your Name", preferredStyle: .Alert)
         
-        let checkoutAction = UIAlertAction(title: "Checkout", style: .Default) { (UIAlertAction) in
+        let checkoutAction = UIAlertAction(title: "Checkout", style: .Default) { _ in
             let textField = self.alertController.textFields?.first
-            self.saveCheckOutName((textField?.text)!)
+            self.saveBorrowersName((textField?.text)!)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .Default , handler: nil)
         
         alertController.addAction(cancelAction)
         alertController.addAction(checkoutAction)
-        
-        alertController.addTextFieldWithConfigurationHandler({ (textfield: UITextField) -> Void in
-        })
+        alertController.addTextFieldWithConfigurationHandler(nil)
         
         self.presentViewController(alertController, animated: true, completion: nil)
     }
-    
-    func saveCheckOutName(name: String) {
+    private func saveBorrowersName(name: String) {
         book.lastCheckedOutBy = name
         book.lastCheckedOut = dateStamp
         booksRequester.update(book)
         
         navigationController?.popToRootViewControllerAnimated(true)
     }
-    
     private func showAlertMessage(message: String!) {
         let alertController = UIAlertController(title: "Prolific Library", message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         presentViewController(alertController, animated: true, completion: nil)
     }
+    
 }

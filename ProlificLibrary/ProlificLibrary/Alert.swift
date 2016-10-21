@@ -8,12 +8,12 @@
 
 import UIKit
 
-class Alert {
+public class Alert {
+    
     func error(message: String, title: String = "") {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        
         alertController.addAction(UIAlertAction(title: "Done", style: .Default, handler: nil))
-        
         UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
     }
+    
 }
