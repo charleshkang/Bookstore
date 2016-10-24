@@ -35,6 +35,7 @@ class BookDetailViewController: UIViewController {
         setLabels()
         dateStamp = NSDateFormatter.localizedStringFromDate(NSDate(), dateStyle: .ShortStyle, timeStyle: .ShortStyle)
     }
+    
     // MARK: Actions
     private func setLabels() {
         if let book = book {
@@ -82,7 +83,6 @@ class BookDetailViewController: UIViewController {
             actionSheet.addAction(tweetAction)
             actionSheet.addAction(facebookPostAction)
             actionSheet.addAction(dismissAction)
-            
             presentViewController(actionSheet, animated: true, completion: nil)
         }
     }

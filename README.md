@@ -1,16 +1,16 @@
 # ProlificLibrary
-View all books from the Prolific Library! Project was built using Swift 2.3, following the MVC design pattern.
+View all books from the Prolific Library! Project was built using Swift 2.3, and follows the MVC design pattern. I wanted to use Swift 3, but the beta version of Xcode 8 was causing a lot of errors, so I stuck with Swift 2.3 and Xcode 7.3.1.
 
 ![alt tag](https://github.com/charleshkang/ProlificLibrary/blob/master/prolificlibrary_demo.gif)
 
 ## Implementation
-I chose MVC as the design pattern for this project because it's what I'm most used to, and through careful abstraction, can lead to a well-coded project. I used GCD to make my fetching code asynchronous, and because they are public functions, this leads to reusability in future projects. I implemented error handling in my `BookStatus` file, and took advantage of `guard`s early exit feature to ensure any errors from the backend were handled.
+I chose MVC as the design pattern for this project because it's what I'm most used to, and through careful abstraction, can be very organized. I used GCD to make my data fetching asynchronous. Because they are public functions, this leads to reusability in future projects. I implemented error handling in my `BookStatus` file, and took advantage of `guard`s early exit feature to ensure any errors from the backend were handled.
 
 I chose to make the UI in Interface Builder because I like seeing the app's flow and design easily. I did not make individual storyboard files, as this was a simple 3 screen app that, in my opinion, would not be necessary.
 
-Through my use of extensions, I've allowed my view controllers to stay neat.
+Through my use of extensions, I've allowed my view controllers to stay organized.
 
-I followed the Prolific Interactive style guide as closely as possible. Making sure each type has its own file, and assigning proper access control to type declarations and functions. I used a combination of `if let`, `guard`, and `nil coalescing` to safely unwrap optionals, only using `!` with IBOutlets and properties I have completely sure will have a value.
+I followed the Prolific Interactive style guide as closely as possible. Making sure each type has its own file, and assigning proper access control to type declarations and functions. I used a combination of `if let`, `guard`, and `nil coalescing` to safely unwrap optionals, only using `!` with IBOutlets and properties I am completely sure will have a value.
 
 ## Pods
 - SwiftyJSON (handle JSON data better and more easily)

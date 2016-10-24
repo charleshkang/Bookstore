@@ -21,7 +21,6 @@ public class AddBookTableViewController: UITableViewController {
     
     // MARK: Actions
     @IBAction private func cancelAction(sender: UIBarButtonItem) {
-
         guard authorTextField.isNilOrEmpty &&
             titleTextField.isNilOrEmpty &&
             publisherTextField.isNilOrEmpty &&
@@ -38,15 +37,25 @@ public class AddBookTableViewController: UITableViewController {
         }
         dismissViewControllerAnimated(true, completion: nil)
     }
+    private func emptyTextFields(message: String, title: String = "") {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        alertController.addAction(OKAction)
+        presentViewController(alertController, animated: true, completion: nil)
+    }
     @IBAction private func doneAction(sender: UIBarButtonItem) {
-        if titleTextField.text == "" || authorTextField.text == "" {
-            let alertController = UIAlertController(title: "Missing Title or Author", message: "Please fill in the required fields", preferredStyle: .Alert)
-            let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-            alertController.addAction(OKAction)
-            presentViewController(alertController, animated: true, completion: nil)
-        } else {
-            addNewBook()
+        guard
+            let title = titleTextField.text,
+            author = authorTextField.text,
+            trimmedTitle = titleTextField.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()),
+            trimmedAuthor = authorTextField.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+            where !title.isEmpty && !author.isEmpty && !trimmedTitle.isEmpty && !trimmedAuthor.isEmpty
+            else {
+                let alertController = UIAlertController(title: "Error", message: "Please fill in the required fields with a valid entry", preferredStyle: .Alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                return presentViewController(alertController, animated: true, completion: nil)
         }
+        addNewBook()
     }
     private func addNewBook() {
         let book = Book(author: authorTextField.text!,
@@ -68,13 +77,13 @@ public class AddBookTableViewController: UITableViewController {
 extension AddBookTableViewController: UITextFieldDelegate {
     
     public func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if titleTextField.text == "" || authorTextField.text == "" {
-            let alertController = UIAlertController(title: "Missing Title or Author", message: "Please fill in the required fields.", preferredStyle: .Alert)
-            let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-            alertController.addAction(OKAction)
-            presentViewController(alertController, animated: true, completion: nil)
-        } else {
-            addNewBook()        }
+        if textField == titleTextField {
+            authorTextField.becomeFirstResponder()
+        } else if textField == authorTextField {
+            publisherTextField.becomeFirstResponder()
+        } else if textField == publisherTextField {
+            categoryTextField.becomeFirstResponder()
+        }
         textField.resignFirstResponder()
         return true
     }

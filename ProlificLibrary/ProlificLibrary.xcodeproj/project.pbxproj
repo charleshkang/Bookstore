@@ -132,6 +132,14 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
+		532C078B1DBDE3EB001F820D /* Constant */ = {
+			isa = PBXGroup;
+			children = (
+				530441681DB5DFEE0011BDF5 /* Constant.swift */,
+			);
+			name = Constant;
+			sourceTree = "<group>";
+		};
 		53B17AF31DB5DF1E00B8D448 = {
 			isa = PBXGroup;
 			children = (
@@ -155,8 +163,8 @@
 		53B17AFE1DB5DF1E00B8D448 /* ProlificLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				530441681DB5DFEE0011BDF5 /* Constant.swift */,
 				53B17B031DB5DF1E00B8D448 /* Main.storyboard */,
+				532C078B1DBDE3EB001F820D /* Constant */,
 				530441711DB5E33B0011BDF5 /* Model */,
 				5325FE9F1DB693D50022E0C3 /* View */,
 				530441701DB5E3350011BDF5 /* Controller */,

@@ -13,5 +13,5 @@ extension UITextField {
     var isNilOrEmpty: Bool {
         return self.text?.isEmpty ?? true
     }
-    
+
 }

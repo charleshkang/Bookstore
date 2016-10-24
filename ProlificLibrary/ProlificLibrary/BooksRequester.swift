@@ -72,8 +72,7 @@ public final class BooksRequester {
         if let id = book.id {
             Alamofire.request(.PUT, "\(Constant.allBooksPath)\(id)", parameters: parameters).responseJSON { (response) in
                 if let error = response.result.error {
-                    let alert = Alert()
-                    alert.error("\(error)", title: "Error")
+                    Alert.error("\(error)", title: "Error")
                 }
             }
         }
@@ -82,14 +81,14 @@ public final class BooksRequester {
         if let id = book.id {
             Alamofire.request(.DELETE, "\(Constant.allBooksPath)\(id)").responseJSON { (response) in
                 if let error = response.result.error {
-                    let alert = Alert()
-                    alert.error("\(error)", title: "Error")
+                    Alert.error("\(error)", title: "Error")
                 }
             }
         }
     }
     public func deleteAll(books: [Book], completion: (Response<AnyObject, NSError>) -> Void) {
         Alamofire.request(.DELETE, Constant.clearBooksPath).responseJSON { _ in
+            // Originally had error handling here as well, but it was causing some issues on Alamofire's end. I think it is due to me not updating the tableview immediately after sending a delete request. 
         }
     }
     
