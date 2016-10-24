@@ -25,8 +25,11 @@ public class BooksViewController: UIViewController, UITableViewDelegate {
         refreshControl.attributedTitle = NSAttributedString(string: "Pulling new books!")
         refreshControl.addTarget(self, action: #selector(BooksViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
+    }
+    override public func viewDidAppear(animated: Bool) {
         refreshBooks()
     }
+    
     // MARK: Actions
     public func refresh(sender: AnyObject) {
         bookRequester.getBooks { books in
