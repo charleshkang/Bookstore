@@ -8,7 +8,7 @@
 
 import UIKit
 
-public struct Alert {
+struct Alert {
     
     static func error(message: String, title: String = "") {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)

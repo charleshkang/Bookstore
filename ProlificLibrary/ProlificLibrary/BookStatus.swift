@@ -8,19 +8,19 @@
 
 import Foundation
 
-public enum Result<T> {
+enum Result<T> {
     case Success(T)
     case Failure(RequestError)
     
 }
 
-public enum SuccessStatusCode: Int {
+enum SuccessStatusCode: Int {
     case OK = 200
     case Created = 201
     
 }
 
-public enum RequestError: ErrorType {
+enum RequestError: ErrorType {
     case InvalidQuery
     case NoContent
     case NotFound
