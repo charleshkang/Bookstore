@@ -64,7 +64,7 @@ class BooksViewController: UIViewController, UITableViewDelegate {
     }
     @IBAction private func clearAllBooks(sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: "Clear all?", message: "Are you sure you want to clear all books?", preferredStyle: .Alert)
-        let deleteAction = UIAlertAction(title: "Delete", style: .Destructive) { (action: UIAlertAction) -> Void in
+        let deleteAction = UIAlertAction(title: "Delete", style: .Destructive) { _ in
                 self.bookRequester.deleteAll(self.allBooks) { _ in
                 }
         }
