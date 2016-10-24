@@ -10,15 +10,16 @@ import Alamofire
 import Foundation
 import SwiftyJSON
 
-public func main(function: () -> Void) {
+func main(function: () -> Void) {
     dispatch_async(dispatch_get_main_queue(), function)
 }
-public func background(function: () -> Void) {
+func background(function: () -> Void) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), function)
 }
-public final class BooksRequester {
+
+class BooksRequester {
     
-    public func getBooks(`for` completion: ((Result<[Book]>) -> Void)?) {
+    func getBooks(`for` completion: ((Result<[Book]>) -> Void)?) {
         var allBooks = [Book]()
         background {
             Alamofire.request(.GET, Constant.allBooksPath).responseJSON { (response) in
@@ -53,7 +54,7 @@ public final class BooksRequester {
             }
         }
     }
-    public func post(book: Book, completion: (Response<AnyObject, NSError>) -> Void) {
+    func post(book: Book, completion: (Response<AnyObject, NSError>) -> Void) {
         let newBookParams: [String: AnyObject] = [
             "author": book.author,
             "title": book.title,
@@ -64,7 +65,7 @@ public final class BooksRequester {
             parameters: newBookParams,
             encoding: .JSON).responseJSON(completionHandler: completion)
     }
-    public func update(with book: Book) {
+    func update(with book: Book) {
         let parameters: [String: AnyObject] = [
             "lastCheckedOutBy": book.lastCheckedOutBy,
             "lastCheckedOut": book.lastCheckedOut
@@ -77,7 +78,7 @@ public final class BooksRequester {
             }
         }
     }
-    public func delete(book: Book) {
+    func delete(book: Book) {
         if let id = book.id {
             Alamofire.request(.DELETE, "\(Constant.allBooksPath)\(id)").responseJSON { (response) in
                 if let error = response.result.error {
@@ -86,7 +87,7 @@ public final class BooksRequester {
             }
         }
     }
-    public func deleteAll(books: [Book], completion: (Response<AnyObject, NSError>) -> Void) {
+    func deleteAll(books: [Book], completion: (Response<AnyObject, NSError>) -> Void) {
         Alamofire.request(.DELETE, Constant.clearBooksPath).responseJSON { _ in
             // Originally had error handling here as well, but it was causing some issues on Alamofire's end. I think it is due to me not updating the tableview immediately after sending a delete request. 
         }

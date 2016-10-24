@@ -19,9 +19,9 @@ class BookDetailViewController: UIViewController {
     @IBOutlet private weak var authorLabel: UILabel!
     @IBOutlet private weak var checkoutButton: UIButton!
     
-    // MARK: Internal Properties
-    internal var allBooks = [Book]()
-    internal var book: Book?
+    // MARK: Properties
+    var allBooks = [Book]()
+    var book: Book?
     
     // MARK: Private Properties
     private var selectedIndex = 0
@@ -32,12 +32,12 @@ class BookDetailViewController: UIViewController {
     // MARK: View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setLabels()
+        setTextLabels()
         dateStamp = NSDateFormatter.localizedStringFromDate(NSDate(), dateStyle: .ShortStyle, timeStyle: .ShortStyle)
     }
     
     // MARK: Actions
-    private func setLabels() {
+    private func setTextLabels() {
         if let book = book {
             titleLabel.text = book.title
             authorLabel.text = book.author
@@ -55,9 +55,8 @@ class BookDetailViewController: UIViewController {
     }
     @IBAction private func shareBookAction(sender: UIBarButtonItem) {
         if let bookTitle = book?.title {
-            let actionSheet = UIAlertController(title: "", message: "Share \(bookTitle)", preferredStyle: UIAlertControllerStyle.ActionSheet)
-            
-            let tweetAction = UIAlertAction(title: "Share on Twitter", style: UIAlertActionStyle.Default) { (action) -> Void in
+            let actionSheet = UIAlertController(title: "", message: "Share: \(bookTitle)", preferredStyle: UIAlertControllerStyle.ActionSheet)
+            let tweetAction = UIAlertAction(title: "Share on Twitter", style: UIAlertActionStyle.Default) { _ in
                 if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
                     let twitterComposeVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
                     twitterComposeVC.setInitialText("I just checked out this cool book from the Prolific Library:\(self.titleLabel.text)")
