@@ -19,38 +19,27 @@ func background(function: () -> Void) {
 
 class BooksRequester {
     
+    let booksParser = BooksParser()
+    
     func getBooks(`for` completion: ((Result<[Book]>) -> Void)?) {
-        var allBooks = [Book]()
         background {
             Alamofire.request(.GET, Constant.allBooksPath).responseJSON { (response) in
-                if let json = response.data {
-                    for (_, value) in JSON(data: json) {
-                        let rawPublisher = value["publisher"].string
-                        let publisher = rawPublisher!.isEmpty ? nil : rawPublisher
-                        let rawTags = value["categories"].string
-                        let tags = rawTags!.isEmpty ? nil : rawTags
-                        
-                        allBooks.append(Book(author: value["author"].stringValue,
-                            tags: tags,
-                            id: value["id"].intValue,
-                            title: value["title"].stringValue,
-                            publisher: publisher,
-                            url: value["url"].stringValue,
-                            lastCheckedOut: value["lastCheckedOut"].stringValue,
-                            lastCheckedOutBy: value["lastCheckedOutBy"].stringValue))
-                    }
-                    guard let statusCode = response.response?.statusCode  else {
-                        main { completion?(.Failure(.UnexpectedError)) }
-                        return
-                    }
-                    guard statusCode == SuccessStatusCode.OK.rawValue else {
-                        print(statusCode)
-                        main { completion?(.Failure(RequestError(code: statusCode))) }
-                        return
-                    }
-                    
-                    main { completion?(.Success(allBooks)) }
+                guard let statusCode = response.response?.statusCode  else {
+                    main { completion?(.Failure(.UnexpectedError)) }
+                    return
                 }
+                guard statusCode == SuccessStatusCode.OK.rawValue else {
+                    print(statusCode)
+                    main { completion?(.Failure(RequestError(code: statusCode))) }
+                    return
+                }
+                guard let jsonData = response.data else {
+                    main { completion?(.Failure(.UnexpectedError)) }
+                    return
+                }
+                let json = JSON(data: jsonData)
+                let books = self.booksParser.parseBookJSON(json)
+                main { completion?(.Success(books)) }
             }
         }
     }
@@ -89,8 +78,7 @@ class BooksRequester {
     }
     func deleteAll(books: [Book], completion: (Response<AnyObject, NSError>) -> Void) {
         Alamofire.request(.DELETE, Constant.clearBooksPath).responseJSON { _ in
-            // Originally had error handling here as well, but it was causing some issues on Alamofire's end. I think it is due to me not updating the tableview immediately after sending a delete request. 
+            // Originally had error handling here as well, but it was causing some issues on Alamofire's end. I think it is due to me not updating the tableview immediately after sending a delete request.
         }
     }
-    
 }
