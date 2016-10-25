@@ -41,6 +41,12 @@ class BookDetailViewController: UIViewController {
         if let book = book {
             titleLabel.text = book.title
             authorLabel.text = book.author
+//            if let publisher = book.publisher {
+//                publisherLabel.text = "Publisher: \(publisher)"
+//            } else {
+//                publisherLabel.text = "Publisher not available"
+//            }
+            
             publisherLabel.text = book.publisher.map { "Publisher: \($0)" } ?? "Publisher not available"
             tagsLabel.text = book.tags.map { "Tags: \($0)" } ?? "No tags 🤔📘"
             if book.lastCheckedOutBy.isEmpty && book.lastCheckedOut.isEmpty {

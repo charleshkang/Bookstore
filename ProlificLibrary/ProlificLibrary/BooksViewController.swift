@@ -106,7 +106,7 @@ extension BooksViewController: UITableViewDataSource {
         if editingStyle == .Delete {
             bookRequester.delete(allBooks[indexPath.row])
             allBooks.removeAtIndex(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             tableView.reloadData()
         }
     }
